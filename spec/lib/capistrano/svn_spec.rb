@@ -21,9 +21,7 @@ module Capistrano
 
     describe "#test" do
       it "returns true" do
-        context.expects(:test).returns(true)
-
-        subject.test
+        expect(subject.test).to be_true
       end
     end
 
@@ -38,17 +36,13 @@ module Capistrano
 
     describe "#clone" do
       it "returns true" do
-        context.expects(:test).returns(true)
-
-        subject.clone
+        expect(subject.clone).to be_true
       end
     end
 
     describe "#update" do
       it "returns true" do
-        context.expects(:test).returns(true)
-
-        subject.update
+        expect(subject.update).to be_true
       end
     end
 
@@ -58,7 +52,7 @@ module Capistrano
         context.expects(:repo_url).returns(:url)
         context.expects(:release_path).returns(:path)
 
-        context.expects(:execute).with(:svn, :export, "#{url}/#{fetch(:svn_location)}", :path)
+        context.expects(:execute).with(:svn, :export, "#{:url}/#{:svn_location}", :path)
 
         subject.release
       end

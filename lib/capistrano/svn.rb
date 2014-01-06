@@ -29,8 +29,7 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def release
-      ask(:svn_location, "trunk")
-      svn, :export, "#{repo_url}/#{fetch(:svn_location)}", release_path
+      svn :export, "#{repo_url}/#{fetch(:svn_location)}", release_path
     end
   end
 end
