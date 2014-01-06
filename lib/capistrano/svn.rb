@@ -3,33 +3,34 @@ load File.expand_path("../tasks/svn.rake", __FILE__)
 require 'capistrano/scm'
 
 class Capistrano::Svn < Capistrano::SCM
-  
-  # execute hg in context with arguments
+
+  # execute svn with argument in the context
+  #
   def svn(*args)
     args.unshift(:svn)
     context.execute *args
   end
-  
+
   module DefaultStrategy
     def test
-      test! " [ -d #{repo_path}/.svn ] "
+      return true
     end
-    
+
     def check
       test! :svn, :info, repo_url
     end
-    
+
     def clone
-      svn :checkout, repo_url, repo_path
+      return true
     end
-    
+
     def update
-      svn :update
+      return true
     end
-    
+
     def release
-      svn :export, '.', release_path
+      ask(:svn_location, "trunk")
+      svn, :export, "#{repo_url}/#{fetch(:svn_location)}", release_path
     end
-    
   end
 end
