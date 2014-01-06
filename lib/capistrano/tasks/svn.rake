@@ -10,28 +10,6 @@ namespace :svn do
     end
   end
 
-  desc 'Clone the repo to the cache'
-  task :clone do
-    on release_roles :all do
-      if strategy.test
-        info t(:mirror_exists, at: repo_path)
-      else
-        within deploy_path do
-          strategy.clone
-        end
-      end
-    end
-  end
-
-  desc 'Pull changes from the remote repo'
-  task :update => :'svn:clone' do
-    on release_roles :all do
-      within repo_path do
-        strategy.update
-      end
-    end
-  end
-
   desc 'Copy repo to releases'
   task :create_release => :'svn:update' do
     on release_roles :all do

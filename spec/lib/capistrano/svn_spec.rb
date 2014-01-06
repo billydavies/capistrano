@@ -20,9 +20,8 @@ module Capistrano
     subject { Capistrano::Svn.new(context, Capistrano::Svn::DefaultStrategy) }
 
     describe "#test" do
-      it "should call test for repo HEAD" do  
-        context.expects(:repo_path).returns("/path/to/repo")
-        context.expects(:test).with " [ -d /path/to/repo/.svn ] "
+      it "returns true" do
+        context.expects(:test).returns(true)
 
         subject.test
       end
@@ -38,29 +37,28 @@ module Capistrano
     end
 
     describe "#clone" do
-      it "should run svn checkout" do
-        context.expects(:repo_url).returns(:url)
-        context.expects(:repo_path).returns(:path)
- 
-        context.expects(:execute).with(:svn, :checkout, :url, :path)
+      it "returns true" do
+        context.expects(:test).returns(true)
 
         subject.clone
       end
     end
 
     describe "#update" do
-      it "should run svn update" do
-        context.expects(:execute).with(:svn, :update)
+      it "returns true" do
+        context.expects(:test).returns(true)
 
         subject.update
       end
     end
 
     describe "#release" do
-      it "should run svn export" do        
+      it "should run svn export" do
+        context.expects(:fetch).returns(:svn_location)
+        context.expects(:repo_url).returns(:url)
         context.expects(:release_path).returns(:path)
-        
-        context.expects(:execute).with(:svn, :export, '.', :path)
+
+        context.expects(:execute).with(:svn, :export, "#{url}/#{fetch(:svn_location)}", :path)
 
         subject.release
       end
