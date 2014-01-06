@@ -11,11 +11,10 @@ namespace :svn do
   end
 
   desc 'Copy repo to releases'
-  task :create_release => :'svn:update' do
+  task :create_release do
+    Capistrano::Configuration.ask(:svn_location, "trunk")
     on release_roles :all do
-      within repo_path do
-        strategy.release
-      end
+      strategy.release
     end
   end
 end
